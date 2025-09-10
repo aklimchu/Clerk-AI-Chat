@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Email Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .form-section, .result-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+
+        .form-section h2, .result-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .optional {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #4facfe;
+            font-weight: 600;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4facfe;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result-content {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 200px;
+        }
+
+        .email-subject {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
+        }
+
+        .email-body {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            color: #34495e;
+        }
+
+        .error {
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .success {
+            background: #27ae60;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .warning {
+            background: #f39c12;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .copy-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #229954;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📧 AI Email Generator</h1>
+            <p>Create professional emails from simple summaries</p>
+        </div>
+
+        <div class="main-content">
+            <div class="form-section">
+                <h2>📝 Email Details</h2>
+                
+                {% if not agent_available %}
+                <div class="warning">
+                    ⚠️ Email agent not available. Please check your OpenAI API key in the .env file.
+                </div>
+                {% endif %}
+
+                <form id="emailForm">
+                    <div class="form-group">
+                        <label for="summary">Email Summary <span class="required">*</span></label>
+                        <textarea 
+                            id="summary" 
+                            name="summary" 
+                            placeholder="Describe what you want the email to say... (e.g., 'Introduce our new product launch and invite clients to a demo')"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tone">Tone</label>
+                        <select id="tone" name="tone">
+                            <option value="professional">Professional</option>
+                            <option value="friendly">Friendly</option>
+                            <option value="formal">Formal</option>
+                            <option value="casual">Casual</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient_context">Recipient Context <span class="optional">(optional)</span></label>
+                        <input 
+                            type="text" 
+                            id="recipient_context" 
+                            name="recipient_context" 
+                            placeholder="e.g., client, colleague, vendor, customer"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sender_name">Your Name <span class="optional">(optional)</span></label>
+                        <input 
+                            type="text" 
+                            id="sender_name" 
+                            name="sender_name" 
+                            placeholder="John Doe"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sender_title">Your Title <span class="optional">(optional)</span></label>
+                        <input 
+                            type="text" 
+                            id="sender_title" 
+                            name="sender_title" 
+                            placeholder="Project Manager"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company">Company <span class="optional">(optional)</span></label>
+                        <input 
+                            type="text" 
+                            id="company" 
+                            name="company" 
+                            placeholder="Your Company Inc."
+                        >
+                    </div>
+
+                    <button type="submit" class="btn" id="generateBtn">
+                        🚀 Generate Email
+                    </button>
+
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        Generating your email...
+                    </div>
+                </form>
+            </div>
+
+            <div class="result-section">
+                <h2>📄 Generated Email</h2>
+                <div class="result-content" id="resultContent">
+                    <p style="color: #7f8c8d; text-align: center; margin-top: 50px;">
+                        Fill out the form and click "Generate Email" to see your professional email here.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('emailForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const generateBtn = document.getElementById('generateBtn');
+            const loading = document.getElementById('loading');
+            const resultContent = document.getElementById('resultContent');
+            
+            // Show loading state
+            generateBtn.disabled = true;
+            loading.style.display = 'block';
+            resultContent.innerHTML = '<p style="color: #7f8c8d; text-align: center; margin-top: 50px;">Generating your email...</p>';
+            
+            try {
+                const response = await fetch('/generate_email', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const email = data.email;
+                    resultContent.innerHTML = `
+                        <div class="success">✅ Email generated successfully!</div>
+                        <div class="email-subject">
+                            <strong>Subject:</strong> ${email.subject}
+                        </div>
+                        <div class="email-body">${email.body}</div>
+                        <button class="copy-btn" onclick="copyToClipboard('${email.subject}\\n\\n${email.body.replace(/'/g, "\\'")}')">
+                            📋 Copy Email
+                        </button>
+                    `;
+                } else {
+                    resultContent.innerHTML = `
+                        <div class="error">❌ Error: ${data.error}</div>
+                    `;
+                }
+            } catch (error) {
+                resultContent.innerHTML = `
+                    <div class="error">❌ Network error: ${error.message}</div>
+                `;
+            } finally {
+                // Hide loading state
+                generateBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Email copied to clipboard!');
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+                alert('Could not copy to clipboard. Please select and copy manually.');
+            });
+        }
+    </script>
+</body>
+</html>
