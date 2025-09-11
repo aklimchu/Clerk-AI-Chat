@@ -1,8 +1,10 @@
-import unittest
+"""Unit tests for mymath module."""
 
+import unittest
 from tests_examples.mymath import add_ints
 
 class TestMyMath(unittest.TestCase):
+    """Tests for the add_ints function."""
     def test_add_ints(self):
         """Test add_ints with a simple case"""
         self.assertEqual(add_ints(2, 3), 5)
