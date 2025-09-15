@@ -1,11 +1,14 @@
+"""Main module of Clerk-AI-Chat application."""
+
 import os
+import sys
 from dotenv import load_dotenv
 from openai import OpenAI
 from Clerk_AI_Chat.agent import ClerkAgent
 from Clerk_AI_Chat.web_app import startup_web_app
-import sys
 
 def main():
+    """Opening the connection with OpenAI and launching the web application."""
     load_dotenv()
 
     # Check if API key is loaded
@@ -14,13 +17,13 @@ def main():
         print("Error: OPENAI_API_KEY not found in environment variables")
         print("Please make sure your .env file contains: OPENAI_API_KEY=your_api_key_here")
         return
-    
+
     # Initialize OpenAI client with API key from environment
-    client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+    OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
     print("OpenAI API client initialized successfully!")
     print(f"API Key loaded: {api_key[:8]}...{api_key[-4:] if len(api_key) > 12 else '***'}")
-    
+
     # Initialize AI agent and run the web app
     try:
         agent = ClerkAgent()

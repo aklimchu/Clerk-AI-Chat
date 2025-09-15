@@ -1,8 +1,9 @@
+""" Creating an OpenAI Agent for email generation"""
+
 import os
+from typing import Optional, Dict, Any
 from dotenv import load_dotenv
 from openai import OpenAI
-from typing import Optional, Dict, Any
-import json
 
 # Load environment variables from .env file
 load_dotenv()
@@ -22,10 +23,11 @@ class ClerkAgent:
         """
         self.api_key = api_key or os.getenv('OPENAI_API_KEY')
         if not self.api_key:
-            raise ValueError("OpenAI API key is required. Set OPENAI_API_KEY environment variable or pass api_key parameter.")
+            raise ValueError("OpenAI API key is required. \
+                             Set OPENAI_API_KEY environment variable or pass api_key parameter.")
 
         self.client = OpenAI(api_key=self.api_key)
-        self.model = "gpt- -turbo"  # Using GPT-4-turbo for advanced email generation
+        self.model = "gpt-4-turbo"  # Using GPT-4-turbo for advanced email generation
 
     def generate_email_reply(self,
                            summary: str,
@@ -116,7 +118,8 @@ class ClerkAgent:
                            company: Optional[str]) -> str:
         """Build the system prompt for the email generation."""
 
-        prompt = """You are an expert business communication assistant specializing in writing professional emails.
+        prompt = """You are an expert business communication assistant \
+            specializing in writing professional emails.
         Your task is to create original, well-structured emails based on user summaries.
 
         Guidelines for email creation:
@@ -183,7 +186,7 @@ class ClerkAgent:
                 # Start collecting body from next line
                 body_lines = lines[i+1:]
                 break
-            elif line_upper.startswith('SUBJECT '):
+            if line_upper.startswith('SUBJECT '):
                 subject = line.replace('SUBJECT ', '').replace('subject ', '').strip()
                 subject_found = True
                 body_lines = lines[i+1:]
@@ -213,7 +216,8 @@ class ClerkAgent:
             "full_content": email_content
         }
 
-    def generate_multiple_variations(self, summary: str, num_variations: int = 3, **kwargs) -> Dict[str, Any]:
+    def generate_multiple_variations(self, summary: str, num_variations: int = 3, **kwargs) \
+        -> Dict[str, Any]:
         """
         Generate multiple variations of the same email reply.
 
