@@ -21,11 +21,7 @@ def test_basic_emails(agent):
     summary = "Thank the client for their inquiry about our services and provide information about our pricing packages"
     result = agent.generate_email_reply(
         summary=summary,
-        tone="professional",
-        recipient_context="potential client",
-        sender_name="John Smith",
-        sender_title="Sales Manager",
-        company="Tech Solutions Inc."
+        tone="professional"
     )
     assert result["success"], f"Basic email generation failed: {result.get('error', 'Unknown error')}"
     assert "email" in result, "Result missing email key"
@@ -39,8 +35,7 @@ def test_variations_emails(agent):
     variations_result = agent.generate_multiple_variations(
         summary=summary,
         num_variations=2,
-        tone="friendly",
-        recipient_context="colleague"
+        tone="friendly"
     )
     assert variations_result["success"], f"Variations generation failed: {variations_result.get('error', 'Unknown error')}"
     assert "variations" in variations_result, "Result missing variations key"
