@@ -1,8 +1,8 @@
-# 📧 Clerk AI Chat
+# Clerk AI Chat
 
 An AI-powered tool that creates professional emails from simple summaries using OpenAI's GPT models.
 
-## 🚀 Features
+## Features
 
 - **AI-Powered Email Generation**: Create professional emails from simple summaries
 - **Multiple Tones**: Choose from Professional, Friendly, Formal, or Casual tones
@@ -11,13 +11,13 @@ An AI-powered tool that creates professional emails from simple summaries using 
 - **Command Line Tools**: Multiple CLI tools for different use cases
 - **Comprehensive Testing**: Full test suite with mock and real API testing
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 structure
 ```
 
-## 🛠️ Installation
+## Installation
 
 ### 1. Clone or Download the Project
 ```bash
@@ -41,7 +41,7 @@ Create a `.env` file in the project root:
 echo "OPENAI_API_KEY=your_openai_api_key_here" > .env
 ```
 
-## 🌐 Web Application (Recommended)
+## Web Application (Recommended)
 
 ### Start the Web Server
 ```bash
@@ -54,15 +54,15 @@ python app.py
 3. Fill out the form and generate emails!
 
 ### Web Interface Features
-- ✅ **Simple Form**: Just describe what you want the email to say
-- ✅ **Tone Selection**: Choose from 4 different tones
-- ✅ **Optional Fields**: Add sender details, company info, recipient context
-- ✅ **Real-time Generation**: See results instantly
-- ✅ **Copy to Clipboard**: Easy copying of generated emails
-- ✅ **Responsive Design**: Works on desktop and mobile
-- ✅ **Error Handling**: Clear error messages and validation
+- **Simple Form**: Just describe what you want the email to say
+- **Tone Selection**: Choose from 4 different tones
+- **Optional Fields**: Add sender details, company info, recipient context
+- **Real-time Generation**: See results instantly
+- **Copy to Clipboard**: Easy copying of generated emails
+- **Responsive Design**: Works on desktop and mobile
+- **Error Handling**: Clear error messages and validation
 
-## 💻 Command Line Tools
+## Command Line Tools
 
 ### 1. Automated tests
 ```bash
@@ -75,7 +75,7 @@ python scripts/demo_agent.py
 ```
 Runs automated email generation and offers interactive mode.
 
-## ⚙️ Configuration
+## Configuration
 
 ### Available Tones
 - **Professional**: Standard business communication
@@ -89,7 +89,7 @@ Runs automated email generation and offers interactive mode.
 - `sender_title`: Your job title
 - `company`: Your company name
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -109,7 +109,7 @@ Runs automated email generation and offers interactive mode.
 - Check the error messages in the web interface
 - Use the health check endpoint: `http://localhost:5000/health`
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -117,11 +117,11 @@ Runs automated email generation and offers interactive mode.
 4. Add tests for new functionality
 5. Submit a pull request
 
-## 📄 License
+## License
 
 This project is open source and available under the MIT License.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - OpenAI for providing the GPT API
 - Flask for the web framework
@@ -129,4 +129,4 @@ This project is open source and available under the MIT License.
 
 ---
 
-**Happy Email Writing! 📧✨**
+**Happy Email Writing!**
