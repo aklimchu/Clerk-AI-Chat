@@ -38,11 +38,7 @@ def basic_emails(agent):
     summary = "Thank the client for their inquiry about our services and provide information about our pricing packages"
     result = agent.generate_email_reply(
         summary=summary,
-        tone="professional",
-        recipient_context="potential client",
-        sender_name="John Smith",
-        sender_title="Sales Manager",
-        company="Tech Solutions Inc."
+        tone="professional"
     )
     if result["success"]:
         email = result["email"]
@@ -60,8 +56,7 @@ def variations_emails(agent):
     variations_result = agent.generate_multiple_variations(
         summary=summary,
         num_variations=2,
-        tone="friendly",
-        recipient_context="colleague"
+        tone="friendly"
     )
 
     if variations_result["success"]:
@@ -88,18 +83,10 @@ def interactive_test(agent):
                 continue
 
             tone = input("🎭 Tone (professional/friendly/formal/casual) [professional]: ").strip() or "professional"
-            recipient = input("👤 Recipient context (optional): ").strip() or None
-            sender_name = input("✍️ Your name (optional): ").strip() or None
-            sender_title = input("💼 Your title (optional): ").strip() or None
-            company = input("🏢 Company (optional): ").strip() or None
             print("\n⏳ Generating email...")
             result = agent.generate_email_reply(
                 summary=summary,
-                tone=tone,
-                recipient_context=recipient,
-                sender_name=sender_name,
-                sender_title=sender_title,
-                company=company
+                tone=tone
             )
             if result["success"]:
                 email = result["email"]

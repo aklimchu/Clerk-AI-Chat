@@ -47,10 +47,6 @@ def generate_email():
         # Get form data
         summary = request.form.get('summary', '').strip()
         tone = request.form.get('tone', 'professional')
-        recipient_context = request.form.get('recipient_context', '').strip() or None
-        sender_name = request.form.get('sender_name', '').strip() or None
-        sender_title = request.form.get('sender_title', '').strip() or None
-        company = request.form.get('company', '').strip() or None
 
         # Validate required fields
         if not summary:
@@ -62,11 +58,7 @@ def generate_email():
         # Generate email using agent from g
         result = g.agent.generate_email_reply(
             summary=summary,
-            tone=tone,
-            recipient_context=recipient_context,
-            sender_name=sender_name,
-            sender_title=sender_title,
-            company=company
+            tone=tone
         )
 
         if result['success']:

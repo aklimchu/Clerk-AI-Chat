@@ -31,28 +31,20 @@ class ClerkAgent:
 
     def generate_email_reply(self,
                            summary: str,
-                           tone: str = "professional",
-                           recipient_context: Optional[str] = None,
-                           sender_name: Optional[str] = None,
-                           sender_title: Optional[str] = None,
-                           company: Optional[str] = None) -> Dict[str, Any]:
+                           tone: str = "professional") -> Dict[str, Any]:
         """
         Generate an official email based on the provided summary.
 
         Args:
             summary: Short summary describing what the email should say
             tone: Tone of the email ("professional", "friendly", "formal", "casual")
-            recipient_context: Context about the recipient (e.g., "client", "colleague", "vendor")
-            sender_name: Name of the sender
-            sender_title: Title/position of the sender
-            company: Company name
 
         Returns:
             Dictionary containing the generated email with subject, body, and metadata
         """
 
         # Build the system prompt
-        system_prompt = self._build_system_prompt(tone, recipient_context, sender_name, sender_title, company)
+        system_prompt = self._build_system_prompt(tone)
 
         # Build the user prompt
         user_prompt = f"""Based on the following summary, create an official email:
@@ -95,11 +87,7 @@ class ClerkAgent:
                 "metadata": {
                     "model": self.model,
                     "tone": tone,
-                    "summary": summary,
-                    "recipient_context": recipient_context,
-                    "sender_name": sender_name,
-                    "sender_title": sender_title,
-                    "company": company
+                    "summary": summary
                 }
             }
 
@@ -113,9 +101,7 @@ class ClerkAgent:
                 }
             }
 
-    def _build_system_prompt(self, tone: str, recipient_context: Optional[str],
-                           sender_name: Optional[str], sender_title: Optional[str],
-                           company: Optional[str]) -> str:
+    def _build_system_prompt(self, tone: str) -> str:
         """Build the system prompt for the email generation."""
 
         prompt = """You are an expert business communication assistant \
@@ -154,18 +140,6 @@ class ClerkAgent:
         2. Include a blank line after the subject
         3. Then provide the complete email body with proper formatting
         4. Expand the summary into a full, detailed email"""
-
-        if recipient_context:
-            prompt += f"\n\nRecipient Context: {recipient_context}"
-
-        if sender_name or sender_title or company:
-            prompt += "\n\nSender Information:"
-            if sender_name:
-                prompt += f"\n- Name: {sender_name}"
-            if sender_title:
-                prompt += f"\n- Title: {sender_title}"
-            if company:
-                prompt += f"\n- Company: {company}"
 
         return prompt
 
