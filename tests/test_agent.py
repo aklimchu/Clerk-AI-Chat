@@ -1,10 +1,15 @@
+"""Functionality tests for AI Agent."""
+
 import pytest
 from dotenv import load_dotenv
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Clerk_AI_Chat.agent import ClerkAgent
 
 @pytest.fixture
 def agent():
+    """Get API key."""
     load_dotenv()
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
@@ -12,6 +17,7 @@ def agent():
     return ClerkAgent()
 
 def test_basic_emails(agent):
+    """Test basic emails generation."""
     summary = "Thank the client for their inquiry about our services and provide information about our pricing packages"
     result = agent.generate_email_reply(
         summary=summary,
@@ -28,6 +34,7 @@ def test_basic_emails(agent):
     assert len(result["email"]["body"]) > 0, "Email body is empty"
 
 def test_variations_emails(agent):
+    """Test generation of variation emails."""
     summary = "Decline a meeting request due to scheduling conflicts and suggest alternative times"
     variations_result = agent.generate_multiple_variations(
         summary=summary,

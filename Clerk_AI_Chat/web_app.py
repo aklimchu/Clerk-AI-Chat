@@ -4,14 +4,14 @@ Flask Web Application for Email Reply Agent
 A simple web interface for generating professional emails.
 """
 
-from flask import Flask, render_template, request, jsonify, flash, g
-import os
 import traceback
+from flask import Flask, render_template, request, jsonify, g
 
 app = Flask(__name__)
 #app.secret_key = 'your-secret-key-change-this'  # Change this in production
 
 def startup_web_app(agent, agent_available=True):
+    """Starting up the Clerk-AI-Agent web app"""
     print("🌐 Starting Email Agent Web Application...")
     print("=" * 50)
     if agent_available:
@@ -43,7 +43,7 @@ def generate_email():
                 'success': False,
                 'error': 'Email agent not available. Please check your OpenAI API key.'
             })
-        
+
         # Get form data
         summary = request.form.get('summary', '').strip()
         tone = request.form.get('tone', 'professional')
@@ -51,14 +51,14 @@ def generate_email():
         sender_name = request.form.get('sender_name', '').strip() or None
         sender_title = request.form.get('sender_title', '').strip() or None
         company = request.form.get('company', '').strip() or None
-        
+
         # Validate required fields
         if not summary:
             return jsonify({
                 'success': False,
                 'error': 'Please provide an email summary.'
             })
-        
+
         # Generate email using agent from g
         result = g.agent.generate_email_reply(
             summary=summary,
@@ -68,19 +68,18 @@ def generate_email():
             sender_title=sender_title,
             company=company
         )
-        
+
         if result['success']:
             return jsonify({
                 'success': True,
                 'email': result['email'],
                 'metadata': result['metadata']
             })
-        else:
-            return jsonify({
-                'success': False,
-                'error': result['error']
-            })
-            
+        return jsonify({
+            'success': False,
+            'error': result['error']
+        })
+
     except Exception as e:
         print(f"Error generating email: {e}")
         print(traceback.format_exc())
