@@ -4,8 +4,8 @@ import os
 import sys
 from dotenv import load_dotenv
 from openai import OpenAI, AuthenticationError
-from Clerk_AI_Chat.agent import ClerkAgent
-from Clerk_AI_Chat.web_app import startup_web_app
+from clerk_ai_chat.agent import ClerkAgent
+from clerk_ai_chat.web_app import startup_web_app
 
 def main():
     """Opening the connection with OpenAI and launching the web application."""

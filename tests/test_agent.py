@@ -3,7 +3,7 @@
 import os
 import pytest
 from dotenv import load_dotenv
-from Clerk_AI_Chat.agent import ClerkAgent
+from clerk_ai_chat.agent import ClerkAgent
 
 @pytest.fixture
 def agent():
