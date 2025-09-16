@@ -8,6 +8,8 @@ from openai import OpenAI, APIError, RateLimitError, APIConnectionError, BadRequ
 # Load environment variables from .env file
 load_dotenv()
 
+agent_model = "gpt-4.1-nano"
+
 class ClerkAgent:
     """
     OpenAI Agent for generating official emails based on user summaries.
@@ -34,7 +36,7 @@ class ClerkAgent:
                            reply_summary: str,
                            tone: str = "professional") -> Dict[str, Any]:
         """
-        Generate an official email reply based on the incoming email and 
+        Generate an official email reply based on the incoming email and
         on the provided summary for the reply.
 
         Args:
