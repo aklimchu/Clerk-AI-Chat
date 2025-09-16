@@ -219,4 +219,5 @@ __pycache__/
 
 # pyenv
 .python-version
+.clerk_venv
 
