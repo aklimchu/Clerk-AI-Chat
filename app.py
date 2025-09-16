@@ -3,7 +3,7 @@
 import os
 import sys
 from dotenv import load_dotenv
-from openai import OpenAI
+from openai import OpenAI, AuthenticationError
 from Clerk_AI_Chat.agent import ClerkAgent
 from Clerk_AI_Chat.web_app import startup_web_app
 
@@ -29,8 +29,8 @@ def main():
         agent = ClerkAgent()
         print("✅ Email agent initialized")
         startup_web_app(agent)
-    except Exception as e:
-        print(f"Error initializing agent: {e}")
+    except (ValueError, AuthenticationError, OSError, RuntimeError) as e:
+        print(f"Error initializing agent or starting web app: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
