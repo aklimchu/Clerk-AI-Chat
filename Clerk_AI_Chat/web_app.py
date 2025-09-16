@@ -6,6 +6,7 @@ A simple web interface for generating professional emails.
 
 import traceback
 from flask import Flask, render_template, request, jsonify, g
+from openai import APIError, RateLimitError, APIConnectionError, BadRequestError
 
 app = Flask(__name__)
 #app.secret_key = 'your-secret-key-change-this'  # Change this in production
@@ -45,19 +46,26 @@ def generate_email():
             })
 
         # Get form data
-        summary = request.form.get('summary', '').strip()
+        incoming_email = request.form.get('incoming_email', '').strip()
+        reply_summary = request.form.get('reply_summary', '').strip()
         tone = request.form.get('tone', 'professional')
 
         # Validate required fields
-        if not summary:
+        if not reply_summary:
             return jsonify({
                 'success': False,
-                'error': 'Please provide an email summary.'
+                'error': 'Please provide a summary for email reply.'
+            })
+        if not incoming_email:
+            return jsonify({
+                'success': False,
+                'error': 'Please provide an incoming email.'
             })
 
         # Generate email using agent from g
         result = g.agent.generate_email_reply(
-            summary=summary,
+            incoming_email=incoming_email,
+            reply_summary=reply_summary,
             tone=tone
         )
 
@@ -72,7 +80,8 @@ def generate_email():
             'error': result['error']
         })
 
-    except Exception as e:
+    except (AttributeError, TypeError, APIError, RateLimitError,\
+            APIConnectionError, BadRequestError) as e:
         print(f"Error generating email: {e}")
         print(traceback.format_exc())
         return jsonify({

@@ -245,11 +245,21 @@
 
                 <form id="emailForm">
                     <div class="form-group">
-                        <label for="summary">Email Summary <span class="required">*</span></label>
+                        <label for="incoming_email">Incoming Email <span class="required">*</span></label>
                         <textarea 
-                            id="summary" 
-                            name="summary" 
-                            placeholder="Describe what you want the email to say... (e.g., 'Introduce our new product launch and invite clients to a demo')"
+                            id="incoming_email" 
+                            name="incoming_email" 
+                            placeholder="Copy and paste the email you received"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="summary">Summary for Email Reply <span class="required">*</span></label>
+                        <textarea 
+                            id="reply_summary" 
+                            name="reply_summary" 
+                            placeholder="Describe what you want the email reply to say... (e.g., 'Introduce our new product launch and invite clients to a demo')"
                             required
                         ></textarea>
                     </div>

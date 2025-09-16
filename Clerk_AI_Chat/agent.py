@@ -3,7 +3,7 @@
 import os
 from typing import Optional, Dict, Any
 from dotenv import load_dotenv
-from openai import OpenAI
+from openai import OpenAI, APIError, RateLimitError, APIConnectionError, BadRequestError
 
 # Load environment variables from .env file
 load_dotenv()
@@ -30,13 +30,16 @@ class ClerkAgent:
         self.model = "gpt-4-turbo"  # Using GPT-4-turbo for advanced email generation
 
     def generate_email_reply(self,
-                           summary: str,
+                           incoming_email: str,
+                           reply_summary: str,
                            tone: str = "professional") -> Dict[str, Any]:
         """
-        Generate an official email based on the provided summary.
+        Generate an official email reply based on the incoming email and 
+        on the provided summary for the reply.
 
         Args:
-            summary: Short summary describing what the email should say
+            incoming email: Email received by the user
+            reply summary: Short summary describing what the email reply should say
             tone: Tone of the email ("professional", "friendly", "formal", "casual")
 
         Returns:
@@ -44,14 +47,17 @@ class ClerkAgent:
         """
 
         # Build the system prompt
-        system_prompt = self._build_system_prompt(tone)
+        system_prompt = self._build_system_prompt()
 
         # Build the user prompt
-        user_prompt = f"""Based on the following summary, create an official email:
+        user_prompt = f"""Based on the following incoming email and summary for the reply,
+        create an official email:
 
-        Summary: {summary}
+        Email received by user: {incoming_email}
 
-        Please generate a complete email with:
+        Summary for the reply: {reply_summary}
+
+        Please generate a complete email reply with:
         1. An appropriate subject line
         2. A professional email body that expands on the summary
         3. Proper greeting and closing
@@ -63,7 +69,7 @@ class ClerkAgent:
         - Clear and actionable
         - Free of grammatical errors
         - Properly formatted for business communication
-        - An original email (not a reply to something)"""
+        - A reply to the email received by user"""
 
         try:
             response = self.client.chat.completions.create(
@@ -87,26 +93,28 @@ class ClerkAgent:
                 "metadata": {
                     "model": self.model,
                     "tone": tone,
-                    "summary": summary
+                    "incoming email": incoming_email,
+                    "reply summary": reply_summary
                 }
             }
 
-        except Exception as e:
+        except (APIError, RateLimitError, APIConnectionError, BadRequestError) as e:
             return {
                 "success": False,
-                "error": str(e),
+                "error": f"OpenAI API error: {str(e)}",
                 "metadata": {
-                    "summary": summary,
+                    "incoming email": incoming_email,
+                    "reply summary": reply_summary,
                     "tone": tone
                 }
             }
 
-    def _build_system_prompt(self, tone: str) -> str:
+    def _build_system_prompt(self) -> str:
         """Build the system prompt for the email generation."""
 
         prompt = """You are an expert business communication assistant \
             specializing in writing professional emails.
-        Your task is to create original, well-structured emails based on user summaries.
+        Your task is to create original, well-structured emails based on incoming emails and user summaries for the email reply.
 
         Guidelines for email creation:
         1. Use proper business email format with clear subject lines
@@ -115,7 +123,7 @@ class ClerkAgent:
         4. Ensure the tone matches the specified style
         5. Make the email actionable and professional
         6. Use proper email etiquette
-        7. Create an ORIGINAL email (not a reply to something)
+        7. Create an email reply to the email received by user
 
         Email Structure:
         - Subject: Clear, descriptive subject line
@@ -190,13 +198,14 @@ class ClerkAgent:
             "full_content": email_content
         }
 
-    def generate_multiple_variations(self, summary: str, num_variations: int = 3, **kwargs) \
-        -> Dict[str, Any]:
+    def generate_multiple_variations(self, incoming_email: str, reply_summary: str, \
+                                     num_variations: int = 3, **kwargs) -> Dict[str, Any]:
         """
         Generate multiple variations of the same email reply.
 
         Args:
-            summary: Short summary of what the email should contain
+            incoming email: Email received by the user
+            reply summary: Short summary of what the email reply should contain
             num_variations: Number of variations to generate (default: 3)
             **kwargs: Additional arguments for generate_email_reply
 
@@ -206,7 +215,7 @@ class ClerkAgent:
         variations = []
 
         for i in range(num_variations):
-            result = self.generate_email_reply(summary, **kwargs)
+            result = self.generate_email_reply(incoming_email, reply_summary, **kwargs)
             if result["success"]:
                 variations.append({
                     "variation": i + 1,
