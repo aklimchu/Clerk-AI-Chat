@@ -1,20 +1,19 @@
 # Clerk AI Chat
 
-An AI-powered tool that creates professional emails from simple summaries using OpenAI's GPT models.
+An AI-powered tool that creates a professional email based on incoming email and user's simple summary.
 
 ## Features
 
 - **AI-Powered Email Generation**: Create professional emails from simple summaries
 - **Multiple Tones**: Choose from Professional, Friendly, Formal, or Casual tones
-- **Customizable Parameters**: Add sender details, company info, and recipient context
 - **Web Interface**: Beautiful, responsive web application
 - **Command Line Tools**: Multiple CLI tools for different use cases
-- **Comprehensive Testing**: Full test suite with mock and real API testing
+- **Comprehensive Testing**: Full test suite with agent testing
 
 ## Project Structure
 
 ```
-structure
+to be added
 ```
 
 ## Installation
@@ -41,7 +40,7 @@ Create a `.env` file in the project root:
 echo "OPENAI_API_KEY=your_openai_api_key_here" > .env
 ```
 
-## Web Application (Recommended)
+## Web Application
 
 ### Start the Web Server
 ```bash
@@ -64,16 +63,10 @@ python app.py
 
 ## Command Line Tools
 
-### 1. Automated tests
+### Automated tests
 ```bash
 pytest tests/test_agent.py
 ```
-
-### 2. Script for command line testing
-```bash
-python scripts/demo_agent.py
-```
-Runs automated email generation and offers interactive mode.
 
 ## Configuration
 
@@ -82,12 +75,6 @@ Runs automated email generation and offers interactive mode.
 - **Friendly**: Warm but professional
 - **Formal**: Very formal, traditional business style
 - **Casual**: Relaxed but appropriate for business
-
-### Optional Parameters
-- `recipient_context`: Who you're writing to (client, colleague, vendor, etc.)
-- `sender_name`: Your name
-- `sender_title`: Your job title
-- `company`: Your company name
 
 ## Troubleshooting
 
