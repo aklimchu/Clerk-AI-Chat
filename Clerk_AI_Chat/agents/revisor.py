@@ -1,6 +1,10 @@
 """Revisor agent wiring: builds Setup and runs Agent with configured instructions."""
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+# from models.models import Agent, Setup
+# from Clerk_AI_Chat.models.models import Agent, Setup
+from models.models import Agent, Setup
 
-from abs_agent import Agent, Setup
 
 
 # globals
@@ -18,25 +22,25 @@ INSTRUCTIONS = (
     f"- The allowed maximum number ({MAX_RESPONSE_LEN})"
 )
 
-RESPONSE = "Hello world"  # test
+RESPONSE = "Hello world"  # test 11
 
 
-def setup_agent(agent_model, agent_instructions, recieved_input: str) -> Setup:
+def setup_agent(agent_model, agent_instructions, received_input: str) -> Setup:
     """
     Create a Setup object for initializing an Agent.
 
     Args:
         agent_model (str): The name of the model to use.
         agent_instructions (str): Instructions for the agent to follow.
-        recieved_input (str): The input string provided to the agent.
+        received_input (str): The input string provided to the agent.
 
     Returns:
         Setup: A configuration object containing model, instructions, and input.
     """
-    return Setup(agent_model, agent_instructions, recieved_input)
+    return Setup(agent_model, agent_instructions, received_input)
 
 
-def get_response_len(resp: str) -> int:
+def get_response_len(resp: str) -> str:
     """
     Calculate the length of a given response string.
 
@@ -48,6 +52,7 @@ def get_response_len(resp: str) -> int:
     """
     return str(len(resp))
 
+# input = get_response_len(RESPONSE)
 
 setup = setup_agent(MODEL, INSTRUCTIONS, get_response_len(RESPONSE))
 
