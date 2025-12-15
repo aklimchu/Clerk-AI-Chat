@@ -8,7 +8,7 @@ from openai import OpenAI, APIError, RateLimitError, APIConnectionError, BadRequ
 # Load environment variables from .env file
 load_dotenv()
 
-agent_model = "gpt-4.1-nano"
+AGENT_MODEL = "gpt-4.1-nano"
 
 class ClerkAgent:
     """
