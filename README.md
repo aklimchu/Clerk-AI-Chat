@@ -1,26 +1,43 @@
 # Clerk AI Chat
 
 An AI-powered tool that creates a professional email based on incoming email and user's simple summary.
+<img width="953" height="611" alt="image" src="https://github.com/user-attachments/assets/1a0fdb7c-beca-4a09-85c0-c10334241f87" />
+
 
 ## Features
 
 - **AI-Powered Email Generation**: Create professional emails from simple summaries
 - **Multiple Tones**: Choose from Professional, Friendly, Formal, or Casual tones
-- **Web Interface**: Beautiful, responsive web application
+- **Web Interface**: Simple and responsive web application
 - **Command Line Tools**: Multiple CLI tools for different use cases
 - **Comprehensive Testing**: Full test suite with agent testing
 
 ## Project Structure
 
-```
-to be added
+```bash
+Clerk-AI-Chat/
+├── .github/worklows        # CI
+├── clerk-ai-chat/
+    ├── templates
+      └── index.html        # HTML templates
+    ├── init.py
+    ├── agent.py            # AI Agents
+    └── web_app.py          # Flask Web Application
+├── tests/
+    ├── init.py
+    └── test_agent.py       # pytest
+├── app.py                  # main module
+├── pytest.ini
+├── README.md
+└── requirements.txt        # Python dependencies
 ```
 
 ## Installation
 
-### 1. Clone or Download the Project
+### 1. Clone the Project
 ```bash
-cd /path/to/Clerk-AI-Chat
+git clone https://github.com/aklimchu/Clerk-AI-Chat.git
+cd Clerk-AI-Chat
 ```
 
 ### 2. Create Virtual Environment
@@ -55,7 +72,6 @@ python app.py
 ### Web Interface Features
 - **Simple Form**: Just describe what you want the email to say
 - **Tone Selection**: Choose from 4 different tones
-- **Optional Fields**: Add sender details, company info, recipient context
 - **Real-time Generation**: See results instantly
 - **Copy to Clipboard**: Easy copying of generated emails
 - **Responsive Design**: Works on desktop and mobile
@@ -95,25 +111,3 @@ pytest tests/test_agent.py
 ### Getting Help
 - Check the error messages in the web interface
 - Use the health check endpoint: `http://localhost:5000/health`
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Acknowledgments
-
-- OpenAI for providing the GPT API
-- Flask for the web framework
-- The Python community for excellent libraries
-
----
-
-**Happy Email Writing!**
